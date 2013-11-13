@@ -15,11 +15,28 @@
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
 
+    <EditText
+        android:id="@+id/cityInputText"
+        android:layout_width="281dp"
+        android:layout_height="wrap_content"
+        android:text="Nizhniy Novgorod"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
     <Button
         android:id="@+id/labelButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Jump to second activity"
         android:onClick="showSecondActivity" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+         />
 
 </LinearLayout>
