@@ -8,7 +8,6 @@ http://appsrise.com[Appsrise SRL, Appseleration GmBH]
 
 Special code for copy and reuse the x86 goldfish qemu kernel:
 
-
 1. cp prebuilts/qemu-kernel/x86/kernel-qemu device/marakana/alpha/kernel
 2. cp system/core/rootdir/etc/init.goldfish.rc device/marakana/alpha/
 3. cp system/core/rootdir/etc/ueventd.goldfish.rc device/marakana/alpha/
