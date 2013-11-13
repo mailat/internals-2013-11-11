@@ -4,3 +4,22 @@
 
 *Marius Mailat*, +<marius.mailat@gmail.com>+
 http://appsrise.com[Appsrise SRL, Appseleration GmBH]
+
+
+Special code for copy and reuse the x86 goldfish qemu kernel:
+
+
+1. cp prebuilts/qemu-kernel/x86/kernel-qemu device/marakana/alpha/kernel
+2. cp system/core/rootdir/etc/init.goldfish.rc device/marakana/alpha/
+3. cp system/core/rootdir/etc/ueventd.goldfish.rc device/marakana/alpha/
+4. edit BoardConfig.mk and change to TARGET_NO_KERNEL := false
+4. edit common.mk (check device/lge/mako/common.mk) and add the following lines:
+
+# Enable our custom kernel
+LOCAL_KERNEL := $(MY_PATH)/kernel
+PRODUCT_COPY_FILES += $(LOCAL_KERNEL):kernel
+
+# Copy our init and ueventd configuration files to the root
+# file system (ramdisk.img -> boot.img)
+PRODUCT_COPY_FILES += $(MY_PATH)/init.goldfish.rc:root/init.goldfish.rc
+PRODUCT_COPY_FILES += $(MY_PATH)/ueventd.goldfish.rc:root/ueventd.goldfish.rc
