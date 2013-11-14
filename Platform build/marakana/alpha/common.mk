@@ -26,3 +26,5 @@ PRODUCT_COPY_FILES += $(LOCAL_KERNEL):kernel
 PRODUCT_COPY_FILES += $(MY_PATH)/init.goldfish.rc:root/init.goldfish.rc
 PRODUCT_COPY_FILES += $(MY_PATH)/ueventd.goldfish.rc:root/ueventd.goldfish.rc
 
+# Include all packages from this file
+include $(MY_PATH)/packages.mk

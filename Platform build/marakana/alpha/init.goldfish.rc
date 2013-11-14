@@ -33,6 +33,8 @@ on boot
     start goldfish-setup
 
     setprop ro.setupwizard.mode EMULATOR
+#start marakana
+    start mrknlogd
 
 # enable Google-specific location features,
 # like NetworkLocationProvider and LocationCollector
@@ -80,3 +82,11 @@ service qemud /system/bin/qemud
 
 service goldfish-logcat /system/bin/logcat -Q
     oneshot
+  
+#custom marakana log flushing daemon  
+service mrknlogd /system/bin/mrknlogd 60
+    oneshot
+    user system
+    group log
+    
+    
