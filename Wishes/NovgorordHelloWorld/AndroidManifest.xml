@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".SecondActivity"/>
+        <activity android:name=".WeatherActivity"/>
+        <activity android:name=".ForecastActivity"/>
     </application>
 
 </manifest>

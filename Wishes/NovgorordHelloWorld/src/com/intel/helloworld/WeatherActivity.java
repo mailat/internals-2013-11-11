@@ -1,29 +1,21 @@
 package com.intel.helloworld;
 
-import java.io.IOException;
-
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class SecondActivity extends Activity {
+public class WeatherActivity extends Activity {
 
     String loadUrl ;
-    String loadForecastUrl ;
     TextView textview;
     private String response ="";
  
@@ -31,16 +23,12 @@ public class SecondActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.weather_page);
         Log.d("Novgorod", "second activity onCreate");
         
         //read the passed value
         Intent intent = getIntent();
         String city = intent.getStringExtra("city");
-        
-        //we hide the Button!
-        Button button = (Button) findViewById(R.id.labelButton);
-        button.setVisibility(View.INVISIBLE);
         
         //we change the text on the TextView with the city
         textview = (TextView) findViewById(R.id.labelText);
@@ -50,17 +38,8 @@ public class SecondActivity extends Activity {
         city = city.replaceAll(" ", "%20");
         loadUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + ",ru&units=metric";
         
-        //load the weather in WebView
-        WebView webView = (WebView) findViewById(R.id.webView);
-        webView.setVisibility(View.VISIBLE);
-        webView.loadUrl(loadUrl);
-        
         //the right way to get the weather
         new WeatherReaderUpdater().execute(loadUrl);
-        
-        //get the forecast of the next 5 days
-        loadForecastUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city 
-        		+ "&ru&units=metric";
     }
     
     //new WeatherReaderUpdater().execute();  
