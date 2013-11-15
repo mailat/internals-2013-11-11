@@ -1,29 +1,37 @@
 package com.intel.helloworld;
 
+import java.util.ArrayList;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 public class ForecastActivity extends ListActivity {
 
     String loadForecastUrl ;
     private String response ="";
+	ArrayList<String> list;
+	ArrayAdapter<String> adapter;
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        //setContentView(R.layout.activity_main);
+
         Log.d("Novgorod", "second activity onCreate");
-        
+
+        //setup the list activity
+		list = new ArrayList<String>();
+		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, list);
+		setListAdapter(adapter);
+		
         //read the passed value
         Intent intent = getIntent();
         String city = intent.getStringExtra("city");
@@ -34,13 +42,10 @@ public class ForecastActivity extends ListActivity {
         loadForecastUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city 
         		+ "&ru&units=metric";
         
-        //TODOthis is a ListaActivity so create an ArrayAdapter and assign it to the activity
-        
         //the right way to get the weather
         new WeatherReaderUpdater().execute(loadForecastUrl);
     }
-    
-    //new WeatherReaderUpdater().execute();  
+     
     private class WeatherReaderUpdater extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -55,7 +60,7 @@ public class ForecastActivity extends ListActivity {
                 Log.d("Novgorod", "response back: " + response);
             } catch (Throwable e) {
                 e.printStackTrace();
-                Log.d("Novgorod", "response back: " + e.getMessage());
+                Log.d("Novgorod", "doInBackground exception:" + e.getMessage());
             }
 
             return null;
@@ -63,34 +68,28 @@ public class ForecastActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-		    try {
-		    	//TODO parse data corectly
-		    	// use tool: http://jsonprettyprint.com/ with the browser output from
-		    	// http://api.openweathermap.org/data/2.5/forecast?q=Nizhniy%20Novgorod&ru&units=metric
-		    	
-		        StringBuffer buffer = new StringBuffer();
-		        JSONObject jObj = new JSONObject(response);
-		                
-		        //get JSONObject - coord
-		        JSONObject jsonObj = jObj.getJSONObject("coord");
-		        
-		        //get string from coord - lat, lon
-		        buffer.append(jsonObj.getString("lat")).append(" - ");
-		        buffer.append(jsonObj.getString("lon")).append(" , temp: ");
-		                
-		        //get JSONObject - main
-		        jsonObj = jObj.getJSONObject("main");
-		        //get temp
-		        buffer.append(jsonObj.getString("temp"));
-		        
-		        //TODO for, while ...
-		        //TODO add this in an ArrayAdapter
-		        
-		        //textview.setText(buffer.toString());
-		                
-		    } catch (JSONException e) {
-		            e.printStackTrace();
-		    }
+        	Log.d("Novgorod", "onPosetExecute");
+			try {
+				JSONObject jobject = new JSONObject(response);
+				int forecastCount = jobject.getInt("cnt");
+				Log.d("Novgorod","Forecast count is " + String.valueOf(forecastCount));
+
+				JSONArray jArray = jobject.getJSONArray("list");
+				list.clear();
+				
+				JSONObject jObject;
+				for (int i = 0; i < jArray.length(); i++) {
+					jObject = jArray.getJSONObject(i);
+
+					list.add(jObject.getString("dt_txt") + " temperature is "
+							+ jObject.getJSONObject("main").getString("temp")
+							+ " Celsius");
+				}
+				adapter.notifyDataSetChanged();
+
+			} catch (Throwable e) {
+				Log.d("Novgorod", "onPostExecute exception: " + e.getMessage());
+			}
         }
     }   
 }
