@@ -22,3 +22,7 @@ PRODUCT_COPY_FILES += $(LOCAL_KERNEL):kernel
 # file system (ramdisk.img -> boot.img)
 PRODUCT_COPY_FILES += $(MY_PATH)/init.goldfish.rc:root/init.goldfish.rc
 PRODUCT_COPY_FILES += $(MY_PATH)/ueventd.goldfish.rc:root/ueventd.goldfish.rc
+
+*Attach sources to eclipse plugin*
+http://adt-addons.googlecode.com/svn/trunk/source/com.android.ide.eclipse.source.update/
+
